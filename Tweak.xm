@@ -10,10 +10,10 @@
 @end
 
 %hook UIStatusBar
-+(CGRect)frameForStyle:(int)style orientation:(int)orientation{
-	return %orig([self defaultStatusBarStyle],orientation);
++(CGRect)frameForStyle:(int)style orientation:(int)orientation {
+	return %orig([self defaultStatusBarStyle], orientation);
 }
-+(float)heightForStyle:(int)style orientation:(int)orientation{
-	return %orig([self defaultStatusBarStyle],orientation);
++(float)heightForStyle:(int)style orientation:(int)orientation {
+	return %orig([self defaultStatusBarStyle], orientation);
 }
 %end //yes, it's that simple.
