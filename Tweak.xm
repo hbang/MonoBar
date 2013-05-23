@@ -5,15 +5,13 @@
  * Licensed under the MIT License <http://adam.mit-license.org>
  */
 
-@interface UIStatusBar
-+(int)defaultStatusBarStyle;
-@end
+#import <UIKit/UIStatusBar.h>
 
 %hook UIStatusBar
-+(CGRect)frameForStyle:(int)style orientation:(int)orientation {
++ (CGRect)frameForStyle:(int)style orientation:(int)orientation {
 	return %orig([self defaultStatusBarStyle], orientation);
 }
-+(float)heightForStyle:(int)style orientation:(int)orientation {
++ (float)heightForStyle:(int)style orientation:(int)orientation {
 	return %orig([self defaultStatusBarStyle], orientation);
 }
 %end //yes, it's that simple.
