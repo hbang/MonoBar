@@ -8,10 +8,11 @@
 #import <UIKit/UIStatusBar.h>
 
 %hook UIStatusBar
-+ (CGRect)frameForStyle:(int)style orientation:(int)orientation {
++ (CGRect)frameForStyle:(UIStatusBarStyle)style orientation:(UIInterfaceOrientation)orientation {
 	return %orig([self defaultStatusBarStyle], orientation);
 }
-+ (float)heightForStyle:(int)style orientation:(int)orientation {
+
++ (float)heightForStyle:(UIStatusBarStyle)style orientation:(UIInterfaceOrientation)orientation {
 	return %orig([self defaultStatusBarStyle], orientation);
 }
 %end //yes, it's that simple.
