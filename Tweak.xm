@@ -60,9 +60,26 @@
 // + (CGRect)_frameForStyleAttributes:(id)arg1 orientation:(int)arg2 inWindowOfSize:(CGSize)arg3
 // + (CGRect)_frameForStyleAttributes:(id)arg1 orientation:(int)arg2
 // - (CGRect)_backgroundFrameForAttributes:(id)arg1
+// - (void)_setOverrideHeight:(float)arg1
+// - (id)initWithFrame:(CGRect)arg1
+
+// Touching these messes with Phone app, and doesn't always shrink (just fools apps):
+// - (float)heightForOrientation:(int)arg1
+// - (float)currentHeight
+
+// These may bring Safe Mode, or just do nothing valuable:
+// - (CGRect)currentFrame
+
+// The following methods shrink or fool apps, but prevent touching:
+// - (id)_currentStyleAttributes
+// - (int)currentStyle
 
 + (float)heightForStyle:(UIStatusBarStyle)style orientation:(UIInterfaceOrientation)orientation {
     return %orig([self defaultStatusBarStyleWithTint:NO], orientation);
+}
+
+- (void)_setFrameForStyle:(id)arg1 {
+    %orig([UIStatusBar _styleAttributesForStatusBarStyle:[UIStatusBar defaultStatusBarStyleWithTint:NO] legacy:NO]);
 }
 
 %end
