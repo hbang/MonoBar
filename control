@@ -2,9 +2,9 @@ Package: ws.hbang.monobar
 Name: MonoBar
 Depends: mobilesubstrate
 Conflicts: gsc.ipad
-Version: 1.0
+Version: 1.1
 Architecture: iphoneos-arm
-Description: Disable double-size status bars
-Maintainer: thekirbylover
+Description: Disable double-height status bars.
+Maintainer: insanj <insanjmail@gmail.com>
 Author: thekirbylover
 Section: Tweaks
