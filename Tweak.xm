@@ -11,6 +11,7 @@
 @interface UIStatusBar
 + (UIStatusBarStyle)defaultStatusBarStyle;
 + (UIStatusBarStyle)defaultStatusBarStyleWithTint:(BOOL)arg1;
++ (id)_styleAttributesForStatusBarStyle:(int)arg1 legacy:(BOOL)arg2;
 
 + (CGRect)frameForStyle:(UIStatusBarStyle)style orientation:(UIInterfaceOrientation)orientation;
 + (float)heightForStyle:(UIStatusBarStyle)style orientation:(UIInterfaceOrientation)orientation;
@@ -54,15 +55,15 @@
 
 %hook UIStatusBar
 
-+ (CGRect)_frameForStyle:(UIStatusBarStyle)style orientation:(UIInterfaceOrientation)orientation inWindowOfSize:(CGSize)size {
-    CGRect monoFrame = %orig([self defaultStatusBarStyleWithTint:NO], orientation, size);
-    NSLog(@"[MonoBar] Overriding request to enlarge the statusbar _frame (from %@ to %@).", NSStringFromCGRect(%orig), NSStringFromCGRect(monoFrame));
-    return monoFrame;
-}
+// Useless methods:
+// + (CGRect)_frameForStyle:(int)arg1 orientation:(int)arg2 inWindowOfSize:(CGSize)arg3
+// + (CGRect)_frameForStyleAttributes:(id)arg1 orientation:(int)arg2 inWindowOfSize:(CGSize)arg3
+// + (CGRect)_frameForStyleAttributes:(id)arg1 orientation:(int)arg2
+// - (CGRect)_backgroundFrameForAttributes:(id)arg1
 
-//- (void)_setFrameForStyle:(UIStatusBarStyle)arg1 {
-//    %orig([UIStatusBar defaultStatusBarStyleWithTint:NO]);
-//}
++ (float)heightForStyle:(UIStatusBarStyle)style orientation:(UIInterfaceOrientation)orientation {
+    return %orig([self defaultStatusBarStyleWithTint:NO], orientation);
+}
 
 %end
 
