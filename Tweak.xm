@@ -72,6 +72,25 @@
 
 %end
 
+%group Federighi
+
+// Intended to prevent shifting when call begins, doesn't seem to
+// have an effect
+- (void)_notifyDidChangeStatusBarFrame:(CGRect)arg1 {
+    return;
+}
+
+- (void)_notifyWillChangeStatusBarFrame:(CGRect)arg1 {
+    return;
+}
+
+// Doesn't seem to have much of an effect
+- (long long)statusBarStyle {
+    return [UIStatusBar defaultStatusBarStyleWithTint:NO];
+}
+
+%end
+
 %hook UIStatusBar
 
 // Useless methods:
@@ -120,7 +139,12 @@
 %end // %group Ive
 
 %ctor {
-    if (IS_IOS_OR_NEWER(7.0)) {
+    if (IS_IOS_OR_NEWER(8.0)) {
+        NSLog(@"[MonoBar] Injecting override code for iOS 8 devices...");
+        %init(Federighi);
+    }
+
+    else if (IS_IOS_OR_NEWER(7.0)) {
         NSLog(@"[MonoBar] Injecting override code for iOS 7 devices...");
 		%init(Ive);
     }
