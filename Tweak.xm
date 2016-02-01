@@ -119,6 +119,54 @@
 
 %end // %group Ive
 
+%group Riccio
+
+%hook UIApplication
+// Intended to prevent shifting when call begins, doesn't seem to
+// have an effect
+- (void)_notifyDidChangeStatusBarFrame:(CGRect)arg1 {
+    return;
+}
+
+- (void)_notifyWillChangeStatusBarFrame:(CGRect)arg1 {
+    return;
+}
+
+// Doesn't seem to have much of an effect
+- (int)statusBarStyle {
+    return [UIStatusBar defaultStatusBarStyleWithTint:NO];
+}
+
+%end
+
+%hook UIStatusBar
+
++ (float)heightForStyle:(int)arg1 orientation:(int)arg2{
+    return %orig([self defaultStatusBarStyleWithTint:NO], arg2);
+}
+
+- (void)_setFrameForStyle:(id)arg1 {
+    %orig([UIStatusBar _styleAttributesForStatusBarStyle:[UIStatusBar defaultStatusBarStyleWithTint:NO] legacy:NO]);
+}
+
+%end
+
+%hook UIStatusBarBackgroundView
+
+// Prevents frame setting while in app, but the label still shows,
+// and everything still gets shifted down. Not really useful.
+- (id)initWithFrame:(CGRect)arg1 style:(id)arg2 backgroundColor:(id)arg3 {
+    return %orig(CGRectMake(arg1.origin.x, arg1.origin.y, arg1.size.width, 20.0), arg2, arg3);
+}
+
+- (void)setFrame:(CGRect)arg1 {
+    %orig(CGRectMake(arg1.origin.x, arg1.origin.y, arg1.size.width, 20.0));
+}
+
+%end
+
+%end // %group Riccio
+
 %group Federighi
 
 %hook UIApplication
@@ -187,7 +235,12 @@
 %end // %group Federighi
 
 %ctor {
-    if (IS_IOS_OR_NEWER(8.0)) {
+    if (IS_IOS_OR_NEWER(9.0)) {
+        NSLog(@"[MonoBar] Injecting override code for iOS 9 devices...");
+        %init(Riccio);
+    }
+
+    else if (IS_IOS_OR_NEWER(8.0)) {
         NSLog(@"[MonoBar] Injecting override code for iOS 8 devices...");
         %init(Federighi);
     }
